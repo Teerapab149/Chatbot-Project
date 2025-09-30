@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PSU Chatbot - Prototype</title>
+  <style>
+    body {
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: linear-gradient(to bottom right, #e6f2ff, #cce0ff);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    header {
+      width: 100%;
+      padding: 16px;
+      background-color: #0078d7;
+      color: white;
+      text-align: center;
+      font-size: 22px;
+      font-weight: bold;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    /* 🔔 กล่องแจ้งเตือน */
+    .notice {
+      position: fixed;        
+      top: 80px;           
+      left: 20px;            
+      padding: 10px 14px;
+      border-left: 5px solid #ff4b4b;
+      background-color: #fffdf8;
+      border-radius: 6px;
+      font-size: 13px;
+      color: #444;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      width: auto;              
+      max-width: 280px;        
+      z-index: 1000;           
+    }
+
+    /* 🔲 กล่องแชท */
+    #chat-container {
+    margin: 100px auto 10px;
+    background: white;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+      width: 420px;
+      max-width: 95%;
+      display: flex;
+      flex-direction: column;
+      height: 70vh;  /* ใช้ตามความสูงจอ */
+    }
+
+
+    #webchat {
+      flex: 1;
+      width: 100%;
+      height: 100%;    
+      overflow-y: auto; 
+
+    }
+
+    footer {
+      margin-top: auto;
+      padding: 6px;
+      font-size: 11px;
+      color: #666;
+      text-align: center;
+    }
+
+    /* 📱 มือถือ */
+    @media (max-width: 768px) {
+      header {
+        font-size: 18px;
+      }
+      .notice {
+        top: auto;
+        bottom: 10px;
+        right: 10px;
+        font-size: 12px;
+        max-width: 200px;
+      }
+      #chat-container {
+        margin: 10px auto;
+        width: 100%;
+        height: 80vh;
+        border-radius: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>🤖 PSU Chatbot Prototype</header>
+
+  <div class="notice">
+    ⚠️ ข้อมูลใน Chatbot นี้ยังไม่สมบูรณ์ 100%<br>
+    เป็น <b>Prototype</b> สำหรับงาน Project เท่านั้น
+  </div>
+
+  <div id="chat-container">
+    <div id="webchat"></div>
+  </div>
+
+  <footer>© 2025 477-302 Cloud Computing | PSU Chatbot Project</footer>
+
+  <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
+  <script>
+  (async function() {
+    // 🔑 ไปขอ token จาก server.js
+    const res = await fetch("/token");
+    const { token } = await res.json();
+
+    // Render Chatbot
+    window.WebChat.renderWebChat({
+      directLine: window.WebChat.createDirectLine({ token }),
+      styleOptions: {
+        hideUploadButton: true,
+        bubbleBackground: '#f0f6ff',
+        bubbleBorderRadius: 12,
+        bubbleFromUserBackground: '#0078d7',
+        bubbleFromUserTextColor: 'white',
+        bubbleFromUserBorderRadius: 12,
+        sendBoxBackground: '#f0f6ff',
+        sendBoxBorderTop: '1px solid #ccc',
+        sendBoxTextColor: '#333',
+        timestampColor: '#888'
+      }
+    }, document.getElementById('webchat'));
+  })();
+</script>
+
+</body>
+</html>
