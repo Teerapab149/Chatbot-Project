@@ -1,0 +1,15 @@
+name: Keep PSU Bot Alive
+
+on:
+  schedule:
+    - cron: "*/10 * * * *"   # รันทุก 10 นาที
+  workflow_dispatch:          # เผื่ออยากกดรันเองก็ได้
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping PSU Assistant bot
+        run: |
+          echo "Pinging bot to keep it awake..."
+          curl -I https://psuassistant-bot.azurewebsites.net/api/messages || true
