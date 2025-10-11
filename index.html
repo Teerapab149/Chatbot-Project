@@ -1,141 +1,411 @@
 <!DOCTYPE html>
 <html lang="th">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PSU Chatbot - Prototype</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PSU Chatbot</title>
+
   <style>
+    html,
     body {
-      font-family: "Segoe UI", Arial, sans-serif;
-      background: linear-gradient(to bottom right, #e6f2ff, #cce0ff);
       margin: 0;
       padding: 0;
+      height: 100%;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background: #0e1621;
+      color: #e8eef6;
+      overflow: hidden;
+    }
+
+    /* ───────── Header ───────── */
+    .header {
+      background: linear-gradient(90deg, #042551 0%, #224c82 100%);
+      color: #fff;
       display: flex;
-      flex-direction: column;
       align-items: center;
-      min-height: 100vh;
-      overflow: hidden;
+      justify-content: space-between;
+      height: 58px;
+      padding: 0 18px;
+      font-weight: 600;
+      font-size: clamp(18px, 2vw, 20px);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      z-index: 30;
+      position: relative;
     }
 
-    header {
+    .menu-toggle {
+      background: #0e1621;
+      border: none;
+      color: #fff;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.25s ease;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+      z-index: 35;
+    }
+
+    .menu-toggle:hover {
+      background: #162236;
+      transform: scale(1.05);
+    }
+
+    .header-title {
+      flex: 1;
+      text-align: right;
+    }
+
+    /* ───────── Layout ───────── */
+    .main-wrapper {
+      position: relative;
+      height: calc(96% - 58px);
       width: 100%;
+      background: #0e1621;
+    }
+
+    /* ───────── Sidebar ───────── */
+    .side-panel {
+      position: fixed;
+      top: 58px;
+      left: 0;
+      width: 280px;
+      height: calc(100% - 58px);
+      background: rgba(27, 39, 53, 0.98);
+      backdrop-filter: blur(8px);
+      box-shadow: 4px 0 10px rgba(0, 0, 0, 0.6);
+      transform: translateX(-100%);
+      transition: transform 0.35s ease-in-out;
       padding: 16px;
-      background-color: #0078d7;
-      color: white;
-      text-align: center;
-      font-size: 22px;
-      font-weight: bold;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      z-index: 40;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #1a73e8 #0e1621;
     }
 
-    /* 🔔 กล่องแจ้งเตือน */
-    .notice {
-      position: fixed;        
-      top: 80px;           
-      left: 20px;            
-      padding: 10px 14px;
-      border-left: 5px solid #ff4b4b;
-      background-color: #fffdf8;
-      border-radius: 6px;
-      font-size: 13px;
-      color: #444;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      width: auto;              
-      max-width: 280px;        
-      z-index: 1000;           
+    .side-panel.open {
+      transform: translateX(0);
     }
 
-    /* 🔲 กล่องแชท */
+    .side-panel::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    .side-panel::-webkit-scrollbar-thumb {
+      background: #1a73e8;
+      border-radius: 3px;
+    }
+
+    .side-panel::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .side-panel h2 {
+      margin-top: 0;
+      font-size: 16px;
+      font-weight: 600;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+
+    .side-close {
+      position: absolute;
+      top: 12px;
+      right: 16px;
+      font-size: 20px;
+      color: #e8eef6;
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+    /* ───────── Overlay ───────── */
+    .overlay {
+      position: fixed;
+      top: 58px;
+      left: 0;
+      width: 100%;
+      height: calc(100% - 58px);
+      background: rgba(0, 0, 0, 0.4);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease;
+      z-index: 30;
+      pointer-events: none;
+    }
+
+    .overlay.show {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    /* ───────── Chat ───────── */
     #chat-container {
-    margin: 100px auto 10px;
-    background: white;
-      border-radius: 15px;
-      overflow: hidden;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-      width: 420px;
-      max-width: 95%;
+      position: relative;
+      width: 100%;
+      height: 100%;
       display: flex;
       flex-direction: column;
-      height: 70vh;  /* ใช้ตามความสูงจอ */
+      background: #0e1621;
+      z-index: 10;
     }
-
 
     #webchat {
       flex: 1;
       width: 100%;
-      height: 100%;    
-      overflow-y: auto; 
-
+      height: 100%;
     }
 
     footer {
-      margin-top: auto;
-      padding: 6px;
-      font-size: 11px;
-      color: #666;
       text-align: center;
+      padding: 6px 0;
+      font-size: 12px;
+      color: #9ba8b4;
+      background: #111a24;
+      border-top: 1px solid #2a3b4d;
+      position: relative;
+      z-index: 5;
     }
 
-    /* 📱 มือถือ */
+    .menu-btn,
+    .question-btn {
+      background: #243447;
+      border: none;
+      border-radius: 6px;
+      color: #e8eef6;
+      padding: 8px 10px;
+      text-align: left;
+      font-size: 14px;
+      cursor: pointer;
+      transition: 0.2s;
+      margin-bottom: 8px;
+      width: 100%;
+    }
+
+    .menu-btn:hover,
+    .question-btn:hover {
+      background: #1a73e8;
+      color: #fff;
+    }
+
     @media (max-width: 768px) {
-      header {
-        font-size: 18px;
+      .menu-toggle {
+        width: 46px;
+        height: 46px;
+        font-size: 22px;
       }
-      .notice {
-        top: auto;
-        bottom: 10px;
-        right: 10px;
-        font-size: 12px;
-        max-width: 200px;
-      }
-      #chat-container {
-        margin: 10px auto;
-        width: 100%;
-        height: 80vh;
-        border-radius: 0;
+
+      .side-panel {
+        width: 240px;
       }
     }
+
+
+    .webchat__basic-transcript {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 20px;
+      box-sizing: border-box;
+    }
+
+    .webchat__basic-transcript__activity {
+      width: 100%;
+      max-width: 850px;
+      margin: 8px auto;
+    }
+
+    .webchat__bubble {
+      margin-top: 6px !important;
+      margin-bottom: 6px !important;
+    }
+
+    @media (max-width: 768px) {
+      .webchat__basic-transcript {
+        padding: 0 12px;
+      }
+
+      .webchat__basic-transcript__activity {
+        max-width: 95%;
+      }
+    }
+
+    /* ───────── ปรับสีลิงก์ในข้อความแชทให้ชัดเจน ───────── */
+    .webchat__bubble__content a {
+      color: #58b8ff !important;
+      text-decoration: underline !important;
+      text-decoration-color: rgba(88, 184, 255, 0.6) !important;
+      text-underline-offset: 2px;
+      transition: color 0.2s ease, text-decoration-color 0.2s ease, text-shadow 0.2s ease;
+    }
+
+    .webchat__bubble__content a:hover {
+      color: #8fd1ff !important;
+      text-decoration-color: #8fd1ff !important;
+      text-shadow: 0 0 6px rgba(88, 184, 255, 0.4);
+    }
+
+    .webchat__bubble__content a:active {
+      color: #b0e0ff !important;
+      text-decoration-color: #b0e0ff !important;
+      text-shadow: 0 0 4px rgba(88, 184, 255, 0.3);
+    }
+    
   </style>
 </head>
+
 <body>
-  <header>🤖 PSU Chatbot Prototype</header>
+  <header class="header">
+    <button class="menu-toggle" id="menuToggle">≡</button>
+    <div class="header-title">PSU Chatbot</div>
+  </header>
 
-  <div class="notice">
-    ⚠️ ข้อมูลใน Chatbot นี้ยังไม่สมบูรณ์ 100%<br>
-    เป็น <b>Prototype</b> สำหรับงาน Project เท่านั้น
+  <div class="main-wrapper">
+    <div class="side-panel" id="sidePanel">
+      <button class="side-close" id="closePanel">×</button>
+      <h2>Menu</h2>
+      <div id="sideContent"></div>
+    </div>
+
+    <div class="overlay" id="overlay"></div>
+
+    <div id="chat-container">
+      <div id="webchat"></div>
+    </div>
   </div>
 
-  <div id="chat-container">
-    <div id="webchat"></div>
-  </div>
-
-  <footer>© 2025 477-302 Cloud Computing | PSU Chatbot Project</footer>
+  <footer>© 2025 Prince of Songkla University | 477-302 Cloud Computing Project</footer>
 
   <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
   <script>
-  (async function() {
-    // 🔑 ไปขอ token จาก server.js
-    const res = await fetch("/token");
-    const { token } = await res.json();
+    (async function () {
+      const res = await fetch("/token");
+      const { token } = await res.json();
+      const directLine = window.WebChat.createDirectLine({ token });
 
-    // Render Chatbot
-    window.WebChat.renderWebChat({
-      directLine: window.WebChat.createDirectLine({ token }),
-      styleOptions: {
-        hideUploadButton: true,
-        bubbleBackground: '#f0f6ff',
-        bubbleBorderRadius: 12,
-        bubbleFromUserBackground: '#0078d7',
-        bubbleFromUserTextColor: 'white',
-        bubbleFromUserBorderRadius: 12,
-        sendBoxBackground: '#f0f6ff',
-        sendBoxBorderTop: '1px solid #ccc',
-        sendBoxTextColor: '#333',
-        timestampColor: '#888'
+      const webchatContainer = document.getElementById("webchat");
+      window.WebChat.renderWebChat({
+        directLine,
+        styleOptions: {
+          hideUploadButton: true,
+          backgroundColor: "#0e1621",
+          bubbleBackground: "#1b2735",
+          bubbleTextColor: "#e8eef6",
+          bubbleFromUserBackground: "linear-gradient(180deg, #ffedb8, #ffe89e)",
+          bubbleFromUserTextColor: "#2f2a1f",
+
+          // ───────── กล่องข้อความ ─────────
+          sendBoxBackground: "#0e1621",
+          sendBoxBorderTop: "1px solid #2a3b4d",
+          sendBoxBorderBottom: "none",
+          sendBoxTextColor: "#e8eef6",
+          sendBoxPlaceholderColor: "#7b8591",
+          sendBoxHeight: 60,
+          sendBoxBorderRadius: 28,
+          sendBoxTextWrap: true,
+
+          // ───────── ปุ่มส่งข้อความ ─────────
+          sendBoxButtonColor: "#1a73e8",
+          sendBoxButtonColorOnHover: "#3d8bff",
+          sendBoxButtonColorOnFocus: "#3d8bff",
+
+          // ───────── ฟองข้อความ ─────────
+          bubbleBorderRadius: 10,
+          bubbleBorderWidth: 0,
+          bubbleFromUserBorderWidth: 0,
+          bubbleBorderColor: "transparent",
+          bubbleFromUserBorderColor: "transparent",
+
+          // ───────── ฟอนต์ ─────────
+          fontSizeSmall: "15px",
+          subtle: "#7b8591",
+
+          // ───────── กำหนดขนาด layout ─────────
+          rootHeight: "100%",
+          rootWidth: "100%",
+          paddingRegular: 10,
+          paddingWide: 20
+        }
+      }, webchatContainer);
+
+
+
+      const res2 = await fetch("/suggestions");
+      const data = await res2.json();
+
+      const sidePanel = document.getElementById("sidePanel");
+      const overlay = document.getElementById("overlay");
+      const sideContent = document.getElementById("sideContent");
+      const toggleBtn = document.getElementById("menuToggle");
+      const closeBtn = document.getElementById("closePanel");
+
+      let isOpen = false;
+      function togglePanel() {
+        isOpen = !isOpen;
+        sidePanel.classList.toggle("open", isOpen);
+        overlay.classList.toggle("show", isOpen);
+        if (isOpen) renderMainMenu();
       }
-    }, document.getElementById('webchat'));
-  })();
-</script>
 
+      toggleBtn.onclick = togglePanel;
+      closeBtn.onclick = togglePanel;
+      overlay.onclick = togglePanel;
+
+      function renderMainMenu() {
+        sideContent.innerHTML = "";
+        const menuItems = [
+          { label: "🧠 คำถามในบอท", key: "botfaq" },
+          { label: "📎 แนบไฟล์", key: "upload" },
+          { label: "❓ ช่วยเหลือ", key: "help" },
+        ];
+        menuItems.forEach(item => {
+          const btn = document.createElement("button");
+          btn.textContent = item.label;
+          btn.className = "menu-btn";
+          btn.onclick = () => handleSelect(item.key);
+          sideContent.appendChild(btn);
+        });
+      }
+
+      function renderBotQuestions() {
+        sideContent.innerHTML = "";
+        const back = document.createElement("button");
+        back.textContent = "⬅️ Return";
+        back.className = "menu-btn";
+        back.onclick = renderMainMenu;
+        sideContent.appendChild(back);
+
+        for (const category in data) {
+          data[category].forEach(q => {
+            const qBtn = document.createElement("button");
+            qBtn.textContent = q;
+            qBtn.className = "question-btn";
+            qBtn.onclick = () => sendMessage(q);
+            sideContent.appendChild(qBtn);
+          });
+        }
+      }
+
+      function handleSelect(key) {
+        if (key === "botfaq") renderBotQuestions();
+        else if (key === "upload") alert("📎 ฟีเจอร์แนบไฟล์ยังไม่เปิดใช้งาน");
+        else if (key === "help") alert("❓ พิมพ์คำถามทั่วไป หรือเลือกหัวข้อจากเมนูเพิ่มเติมได้เลยครับ 😊");
+      }
+
+      function sendMessage(text) {
+        directLine.postActivity({
+          from: { id: "user1", name: "User" },
+          type: "message",
+          text
+        }).subscribe();
+      }
+    })();
+  </script>
 </body>
+
 </html>
