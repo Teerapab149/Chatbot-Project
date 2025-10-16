@@ -1,0 +1,164 @@
+.root {
+    --bg-color: #0f1a26;
+    --chat-bg: #142233;
+    --panel-bg: #17283d;
+    --header-bg: linear-gradient(90deg, #063068 0%, #1f4f86 100%);
+    --text-color: #f2f6fa;
+    --subtext-color: #9caab7;
+    --bubble-bg: #182533;
+    --bubble-border: rgba(255, 255, 255, 0.04);
+    --bubble-user-bg: rgba(52, 57, 66, 0.9);
+    --accent: #63baff;
+    --accent-hover: #8fd1ff;
+    --border-color: rgba(255, 255, 255, 0.08);
+    --scroll-thumb: linear-gradient(180deg, #2f527c, #1c324f);
+    --scroll-thumb-hover: linear-gradient(180deg, #4678b0, #2b527e);
+    --scroll-track: #0f1a26;
+    --notice-bg: rgba(88, 184, 255, 0.12);
+    --notice-text: #a9d4ff;
+    --hero-btn-bg: linear-gradient(180deg, #2b7de9, #175bb8);
+    --hero-btn-hover: linear-gradient(180deg, #4a90ff, #2b7de9);
+    --footer-border: rgba(255, 255, 255, 0.08);
+    --overlay-bg: rgba(0, 0, 0, 0.5);
+    --suggestion-bg: #384768;
+    --suggestion-border: rgba(178, 196, 244, 0.164);
+    --suggestion-hover-bg: #819ddb;
+    --suggestion-text: #e8eef6;
+    --button-shadow: 0 1px 6px rgba(255, 255, 255, 0.05);
+}
+
+.light-theme {
+    --bg-color: #f3eee3;
+    --chat-bg: #f8f4ea;
+    --panel-bg: #ece2d0;
+    --header-bg: linear-gradient(90deg, #ffd97d 0%, #fcb64e 100%);
+    --text-color: #2b261e;
+    --subtext-color: #5e5546;
+    --bubble-bg: #fffaf1;
+    --bubble-user-bg: #ffe08a;
+    --button-bg: #f0e0c5;
+    --accent: #c18d2a;
+    --accent-hover: #d9a23b;
+    --border-color: rgba(0, 0, 0, 0.1);
+    --scroll-thumb: #d2bc88;
+    --scroll-thumb-hover: #c6ac6e;
+    --scroll-track: #f1e6d6;
+    --notice-bg: rgba(255, 224, 160, 0.25);
+    --notice-text: #a47c2b;
+    --hero-btn-bg: #ffd97d;
+    --hero-btn-hover: #ffce65;
+    --footer-border: rgba(0, 0, 0, 0.1);
+    --overlay-bg: rgba(255, 255, 255, 0.6);
+    --suggestion-bg: #fff4d6;
+    --suggestion-border: rgba(200, 160, 70, 0.45);
+    --suggestion-hover-bg: #f1e2bc;
+    --suggestion-text: #2e281e;
+    --button-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+}
+
+/* ───────── Global Apply ───────── */
+body {
+    background: var(--bg-color);
+    color: var(--text-color);
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Header */
+.header {
+    background: var(--header-bg);
+    color: var(--text-color);
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Notice bar */
+.notice-bar {
+    background: var(--notice-bg);
+    color: var(--notice-text);
+    border-bottom: 1px solid var(--border-color);
+    transition: background 0.3s ease, color 0.3s ease, border 0.3s ease;
+}
+
+/* Sidebar + Layout */
+.side-panel {
+    background: var(--panel-bg);
+    color: var(--text-color);
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.main-wrapper,
+#chat-container {
+    background: var(--bg-color);
+    color: var(--text-color);
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Footer */
+footer {
+    background: var(--chat-bg);
+    color: var(--text-color);
+    border-top: 1px solid var(--border-color);
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Chat bubbles */
+.webchat__bubble {
+    background: var(--bubble-bg) !important;
+    color: var(--text-color) !important;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Hero buttons */
+.hero-btn {
+    background: var(--accent);
+    color: #fff;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.hero-btn:hover {
+    background: var(--accent-hover);
+}
+
+/* Question buttons */
+.question-btn {
+    background: var(--button-bg);
+    color: var(--text-color);
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.question-btn:hover {
+    background: var(--accent-hover);
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+/* Links in chat */
+.webchat__bubble__content a {
+    color: var(--accent);
+    text-decoration-color: currentColor;
+    text-underline-offset: 2px;
+    transition: color 0.3s ease, text-decoration-color 0.3s ease;
+}
+
+.webchat__bubble__content a:hover {
+    color: var(--accent-hover);
+    text-decoration-color: var(--accent-hover);
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--scroll-track);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--scroll-thumb);
+    border-radius: 6px;
+    border: 2px solid var(--bg-color);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--scroll-thumb-hover);
+}

@@ -2,410 +2,1045 @@
 <html lang="th">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>PSU Chatbot</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PSU Chatbot</title>
 
-  <style>
-    html,
-    body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      font-family: "Segoe UI", Arial, sans-serif;
-      background: #0e1621;
-      color: #e8eef6;
-      overflow: hidden;
-    }
+    <style>
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            font-family: "Segoe UI", Arial, sans-serif;
+            background: var(--bg-color);
+            transition: background 0.3s ease, color 0.3s ease;
+            color: #e8eef6;
+            overflow: hidden;
+        }
 
-    /* ───────── Header ───────── */
-    .header {
-      background: linear-gradient(90deg, #042551 0%, #224c82 100%);
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 58px;
-      padding: 0 18px;
-      font-weight: 600;
-      font-size: clamp(18px, 2vw, 20px);
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-      z-index: 30;
-      position: relative;
-    }
+        /* ───────── THEME VARIABLES ───────── */
+        /* ===== THEME VARIABLES ===== */
 
-    .menu-toggle {
-      background: #0e1621;
-      border: none;
-      color: #fff;
-      width: 42px;
-      height: 42px;
-      border-radius: 50%;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.25s ease;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
-      z-index: 35;
-    }
-
-    .menu-toggle:hover {
-      background: #162236;
-      transform: scale(1.05);
-    }
-
-    .header-title {
-      flex: 1;
-      text-align: right;
-    }
-
-    /* ───────── Layout ───────── */
-    .main-wrapper {
-      position: relative;
-      height: calc(96% - 58px);
-      width: 100%;
-      background: #0e1621;
-    }
-
-    /* ───────── Sidebar ───────── */
-    .side-panel {
-      position: fixed;
-      top: 58px;
-      left: 0;
-      width: 280px;
-      height: calc(100% - 58px);
-      background: rgba(27, 39, 53, 0.98);
-      backdrop-filter: blur(8px);
-      box-shadow: 4px 0 10px rgba(0, 0, 0, 0.6);
-      transform: translateX(-100%);
-      transition: transform 0.35s ease-in-out;
-      padding: 16px;
-      z-index: 40;
-      overflow-y: auto;
-      scrollbar-width: thin;
-      scrollbar-color: #1a73e8 #0e1621;
-    }
-
-    .side-panel.open {
-      transform: translateX(0);
-    }
-
-    .side-panel::-webkit-scrollbar {
-      width: 6px;
-    }
-
-    .side-panel::-webkit-scrollbar-thumb {
-      background: #1a73e8;
-      border-radius: 3px;
-    }
-
-    .side-panel::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    .side-panel h2 {
-      margin-top: 0;
-      font-size: 16px;
-      font-weight: 600;
-      color: #fff;
-      margin-bottom: 12px;
-    }
-
-    .side-close {
-      position: absolute;
-      top: 12px;
-      right: 16px;
-      font-size: 20px;
-      color: #e8eef6;
-      background: none;
-      border: none;
-      cursor: pointer;
-    }
-
-    /* ───────── Overlay ───────── */
-    .overlay {
-      position: fixed;
-      top: 58px;
-      left: 0;
-      width: 100%;
-      height: calc(100% - 58px);
-      background: rgba(0, 0, 0, 0.4);
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.3s ease;
-      z-index: 30;
-      pointer-events: none;
-    }
-
-    .overlay.show {
-      opacity: 1;
-      visibility: visible;
-      pointer-events: auto;
-    }
-
-    /* ───────── Chat ───────── */
-    #chat-container {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      background: #0e1621;
-      z-index: 10;
-    }
-
-    #webchat {
-      flex: 1;
-      width: 100%;
-      height: 100%;
-    }
-
-    footer {
-      text-align: center;
-      padding: 6px 0;
-      font-size: 12px;
-      color: #9ba8b4;
-      background: #111a24;
-      border-top: 1px solid #2a3b4d;
-      position: relative;
-      z-index: 5;
-    }
-
-    .menu-btn,
-    .question-btn {
-      background: #243447;
-      border: none;
-      border-radius: 6px;
-      color: #e8eef6;
-      padding: 8px 10px;
-      text-align: left;
-      font-size: 14px;
-      cursor: pointer;
-      transition: 0.2s;
-      margin-bottom: 8px;
-      width: 100%;
-    }
-
-    .menu-btn:hover,
-    .question-btn:hover {
-      background: #1a73e8;
-      color: #fff;
-    }
-
-    @media (max-width: 768px) {
-      .menu-toggle {
-        width: 46px;
-        height: 46px;
-        font-size: 22px;
-      }
-
-      .side-panel {
-        width: 240px;
-      }
-    }
+        .dark-theme {
+            /* ===== Refined Dark Theme ===== */
+            --bg-color: #0f1a26;
+            --chat-bg: #142233;
+            --panel-bg: #17283d;
+            --header-bg: linear-gradient(90deg, #063068 0%, #1f4f86 100%);
+            --text-color: #f2f6fa;
+            --subtext-color: #9caab7;
+            --bubble-bg: #182533;
+            --bubble-border: rgba(255, 255, 255, 0.04);
+            --bubble-user-bg: rgba(52, 57, 66, 0.9);
+            --accent: #63baff;
+            --accent-hover: #8fd1ff;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --scroll-thumb: linear-gradient(180deg, #2f527c, #1c324f);
+            --scroll-thumb-hover: linear-gradient(180deg, #4678b0, #2b527e);
+            --scroll-track: #0f1a26;
+            --notice-bg: rgba(88, 184, 255, 0.12);
+            --notice-text: #a9d4ff;
+            --hero-btn-bg: linear-gradient(180deg, #2b7de9, #175bb8);
+            --hero-btn-hover: linear-gradient(180deg, #4a90ff, #2b7de9);
+            --footer-border: rgba(255, 255, 255, 0.08);
+            --overlay-bg: rgba(0, 0, 0, 0.5);
+            --suggestion-bg: #384768;
+            --suggestion-border: rgba(178, 196, 244, 0.164);
+            --suggestion-hover-bg: #819ddb;
+            --suggestion-text: #e8eef6;
+            --button-shadow: 0 1px 6px rgba(255, 255, 255, 0.05);
+        }
 
 
-    .webchat__basic-transcript {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 0 20px;
-      box-sizing: border-box;
-    }
 
-    .webchat__basic-transcript__activity {
-      width: 100%;
-      max-width: 850px;
-      margin: 8px auto;
-    }
+        .light-theme {
+            --bg-color: #f3eee3;
+            --chat-bg: #f8f4ea;
+            --panel-bg: #ece2d0;
+            --header-bg: linear-gradient(90deg, #ffd97d 0%, #fcb64e 100%);
+            --text-color: #2b261e;
+            --subtext-color: #5e5546;
+            --bubble-bg: #fffaf1;
+            --bubble-user-bg: #ffe08a;
+            --button-bg: #f0e0c5;
+            --accent: #c18d2a;
+            --accent-hover: #d9a23b;
+            --border-color: rgba(0, 0, 0, 0.1);
+            --scroll-thumb: #d2bc88;
+            --scroll-thumb-hover: #c6ac6e;
+            --scroll-track: #f1e6d6;
+            --notice-bg: rgba(255, 224, 160, 0.25);
+            --notice-text: #a47c2b;
+            --hero-btn-bg: #ffd97d;
+            --hero-btn-hover: #ffce65;
+            --footer-border: rgba(0, 0, 0, 0.1);
+            --overlay-bg: rgba(255, 255, 255, 0.6);
+            --suggestion-bg: #fff4d6;
+            --suggestion-border: rgba(200, 160, 70, 0.45);
+            --suggestion-hover-bg: #f1e2bc;
+            --suggestion-text: #2e281e;
+        }
 
-    .webchat__bubble {
-      margin-top: 6px !important;
-      margin-bottom: 6px !important;
-    }
 
-    @media (max-width: 768px) {
-      .webchat__basic-transcript {
-        padding: 0 12px;
-      }
 
-      .webchat__basic-transcript__activity {
-        max-width: 95%;
-      }
-    }
 
-    /* ───────── ปรับสีลิงก์ในข้อความแชทให้ชัดเจน ───────── */
-    .webchat__bubble__content a {
-      color: #58b8ff !important;
-      text-decoration: underline !important;
-      text-decoration-color: rgba(88, 184, 255, 0.6) !important;
-      text-underline-offset: 2px;
-      transition: color 0.2s ease, text-decoration-color 0.2s ease, text-shadow 0.2s ease;
-    }
+        /* ───────── THEME APPLY ───────── */
+        body {
+            background: var(--bg-color);
+            color: var(--text-color);
+            transition: background 0.3s ease, color 0.3s ease;
+        }
 
-    .webchat__bubble__content a:hover {
-      color: #8fd1ff !important;
-      text-decoration-color: #8fd1ff !important;
-      text-shadow: 0 0 6px rgba(88, 184, 255, 0.4);
-    }
+        /* Header */
+        .header {
+            background: var(--accent);
+            color: var(--text-color);
+            transition: background 0.3s ease, color 0.3s ease;
+        }
 
-    .webchat__bubble__content a:active {
-      color: #b0e0ff !important;
-      text-decoration-color: #b0e0ff !important;
-      text-shadow: 0 0 4px rgba(88, 184, 255, 0.3);
-    }
-    
-  </style>
+        /* Notice bar */
+        .notice-bar {
+            background: var(--notice-bg);
+            color: var(--notice-text);
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        /* Sidebar */
+        .side-panel {
+            background: var(--bg-color);
+            color: var(--text-color);
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        /* Chat container */
+        #chat-container,
+        .main-wrapper {
+            background: var(--bg-color);
+            color: var(--text-color);
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--bg-color);
+            color: var(--text-color);
+            border-top: 1px solid var(--footer-border);
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        /* Bubbles */
+        .webchat__bubble {
+            color: var(--text-color);
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+        .webchat__send-box-text-box__input {
+            background: var(--chat-bg);
+            color: var(--text-color);
+            border: none;
+            outline: none;
+        }
+
+        .webchat__send-box__main {
+            border-top: none !important;
+        }
+
+
+        .webchat__bubble__content {
+            background: var(--bubble-bg);
+            );
+            color: var(--text-color);
+            border: none;
+            outline: none;
+        }
+
+        /* Hero Buttons */
+        .hero-btn {
+            background: var(--hero-btn-bg);
+            color: var(--text-color);
+            border: none;
+            transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+        }
+
+        .hero-btn:hover {
+            background: var(--hero-btn-hover);
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+
+        /* Links inside bubble */
+        .webchat__bubble__content a {
+            color: var(--accent);
+            text-decoration: underline;
+            text-decoration-color: var(--accent);
+            text-underline-offset: 2px;
+            transition: color 0.25s ease, text-decoration-color 0.25s ease;
+        }
+
+        .webchat__bubble__content a:hover {
+            color: var(--accent-hover);
+            text-decoration-color: var(--accent-hover);
+        }
+
+
+
+        /* ───────── Header ───────── */
+        .header {
+            background: var(--header-bg);
+            color: var(--text-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 58px;
+            padding: 0 18px;
+            font-weight: 600;
+            font-size: clamp(18px, 2vw, 20px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            z-index: 30;
+            position: relative;
+            transition: background 0.3s ease, color 0.3s ease;
+        }
+
+
+        .menu-toggle {
+            background: var(--button-bg);
+            border: none;
+            color: var(--text-color);
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.25s ease;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+            z-index: 35;
+        }
+
+        .menu-toggle:hover {
+            background: var(--accent);
+            color: #fff;
+            transform: scale(1.05);
+        }
+
+        .header-title {
+            flex: 1;
+            text-align: right;
+        }
+
+        /* ───────── Layout ───────── */
+        .main-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background: var(--bg-color);
+            overflow: hidden;
+        }
+
+        /* ───────── Sidebar ───────── */
+        .side-panel {
+            position: fixed;
+            top: 58px;
+            left: 0;
+            width: 280px;
+            height: calc(100% - 58px);
+            background: var(--panel-bg);
+            box-shadow: inset -1px 0 0 var(--border-color);
+            transform: translateX(-100%);
+            transition: transform 0.35s ease-in-out;
+            padding: 16px;
+            z-index: 40;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: var(--scroll-thumb) var(--scroll-track);
+            border-right: 1px solid var(--border-color);
+            will-change: transform, scroll-position;
+            isolation: isolate;
+        }
+
+        .side-panel.open {
+            transform: translateX(0);
+        }
+
+        .side-panel::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .side-panel::-webkit-scrollbar-thumb {
+            background: var(--scroll-thumb);
+            border-radius: 6px;
+            border: 2px solid var(--panel-bg);
+            transition: background 0.2s ease;
+        }
+
+        .side-panel::-webkit-scrollbar-thumb:hover {
+            background: var(--scroll-thumb-hover);
+        }
+
+        .side-panel::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .side-panel h2 {
+            margin-top: 0;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-color);
+            margin-bottom: 12px;
+        }
+
+        .side-close {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            font-size: 20px;
+            color: var(--text-color);
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        /* ───────── Overlay ───────── */
+        .overlay {
+            position: fixed;
+            top: 58px;
+            left: 0;
+            width: 100%;
+            height: calc(100% - 58px);
+            background: var(--overlay-bg);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, background 0.3s ease;
+            z-index: 30;
+            pointer-events: none;
+        }
+
+        .overlay.show {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        /* ───────── Chat ───────── */
+        #chat-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            background: var(--chat-bg);
+            z-index: 10;
+            transition: background 0.3s ease;
+        }
+
+        #webchat {
+            flex: 1;
+            width: 100%;
+            height: 100%;
+        }
+
+        footer {
+            text-align: center;
+            padding: 8px 0;
+            font-size: 12px;
+            color: var(--subtext-color);
+            background: var(--chat-bg);
+            border-top: 1px solid var(--footer-border);
+            position: relative;
+            z-index: 5;
+            transition: background 0.3s ease, color 0.3s ease, border 0.3s ease;
+        }
+
+        @media (max-width: 600px) {
+            footer {
+                font-size: 10px;
+                padding: 3px 0;
+                line-height: 1.2;
+                background: var(--chat-bg);
+                border-top: 1px solid var(--footer-border);
+                color: var(--subtext-color);
+            }
+        }
+
+        /* ───────── ส่วนของ side panel ───────── */
+        .menu-btn,
+        .question-btn {
+            background: var(--bubble-bg);
+            border: none;
+            border-radius: 6px;
+            color: var(--text-color);
+            padding: 8px 10px;
+            text-align: left;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            margin-bottom: 8px;
+            width: 100%;
+        }
+
+
+        .menu-btn:hover,
+
+        .question-btn:hover {
+            background: var(--accent-hover);
+            color: var(--bg-color);
+            transform: translateY(-1px);
+        }
+
+
+        .side-panel::-webkit-scrollbar-track {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                width: 46px;
+                height: 46px;
+                font-size: 22px;
+            }
+
+            .side-panel {
+                width: 240px;
+            }
+        }
+
+        .webchat__basic-transcript {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            box-sizing: border-box;
+        }
+
+        .webchat__basic-transcript__activity {
+            width: 100%;
+            max-width: 850px;
+            margin: 8px auto;
+        }
+
+        .webchat__bubble {
+            margin-top: 6px !important;
+            margin-bottom: 6px !important;
+        }
+
+        @media (max-width: 768px) {
+            .webchat__basic-transcript {
+                padding: 0px;
+            }
+
+            .webchat__basic-transcript__activity {
+                max-width: 95%;
+            }
+        }
+
+        /* ───────── ปรับสีลิงก์ในข้อความแชทให้ชัดเจน ───────── */
+        .webchat__bubble__content a {
+            color: var(--accent) !important;
+            text-decoration: underline !important;
+            text-decoration-color: var(--accent) !important;
+            text-underline-offset: 2px;
+            transition: color 0.2s ease, text-decoration-color 0.2s ease, text-shadow 0.2s ease;
+        }
+
+        .webchat__bubble__content a:hover {
+            color: var(--accent-hover) !important;
+            text-decoration-color: var(--accent-hover) !important;
+            text-shadow: 0 0 6px var(--accent-hover);
+        }
+
+        .webchat__bubble__content a:active {
+            color: var(--text-color) !important;
+            text-decoration-color: var(--text-color) !important;
+            text-shadow: 0 0 4px rgba(88, 184, 255, 0.3);
+        }
+
+
+        /* user text box */
+        .webchat__bubble--from-user .webchat__bubble__content {
+            background: var(--bubble-user-bg) !important;
+            /* ใช้ค่าจากตัวแปรธีม */
+            color: var(--text-color) !important;
+            border: none !important;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            padding: 0px 2px;
+            transition: background 0.3s ease;
+        }
+
+
+        /* ───────── notice-bar chatbot ยังไม่สมบูรณ์ ───────── */
+        .notice-bar {
+            background: var(--notice-bg);
+            color: var(--notice-text);
+            text-align: right;
+            padding: 6px 12px;
+            font-size: 14px;
+            border-bottom: 1px solid var(--notice-bg);
+        }
+
+        @media (max-width: 600px) {
+            .notice-bar {
+                font-size: 11px;
+                padding: 4px 8px;
+                text-align: right;
+                color: var(--notice-text);
+                border-bottom: 1px solid var(--notice-bg);
+            }
+        }
+
+
+        /* ───────── ปิดการ scroll ของ container ชั้นนอก ───────── */
+        #chat-container,
+        #webchat {
+            overflow: hidden !important;
+        }
+
+        /* ───────── scroll เฉพาะชั้น react-scroll-to-bottom ───────── */
+        div[class*="react-scroll-to-bottom"][class*="scrollable"] {
+            overflow-y: auto !important;
+            overflow-x: hidden !important;
+            padding-right: 0 !important;
+            margin-right: 0 !important;
+            background: var(--bg-color) !important;
+            box-sizing: border-box !important;
+        }
+
+        /* ───────── scrollbar styling ───────── */
+        div[class*="react-scroll-to-bottom"][class*="scrollable"]::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        div[class*="react-scroll-to-bottom"][class*="scrollable"]::-webkit-scrollbar-track {
+            background: transparent !important;
+        }
+
+        div[class*="react-scroll-to-bottom"][class*="scrollable"]::-webkit-scrollbar-thumb {
+            /*background: linear-gradient(180deg, #2b4c76, #1a2f4d);*/
+            border-radius: 6px;
+            border: 2px solid var(--scroll-track);
+            transition: background 0.2s ease;
+        }
+
+        div[class*="react-scroll-to-bottom"][class*="scrollable"]::-webkit-scrollbar-thumb:hover {
+            /*background: linear-gradient(180deg, #4673a9, #2a5278);*/
+        }
+
+        div[class*="react-scroll-to-bottom"][class*="scrollable"] {
+            overflow-y: auto !important;
+            overflow-x: hidden !important;
+            padding-right: 0 !important;
+            margin-right: 0 !important;
+            background: var(--bg-color) !important;
+            box-sizing: border-box !important;
+        }
+
+        div[class*="webchat__basic-transcript__scrollable"],
+        div[class*="webchat__basic-transcript"],
+        div[class*="webchat__stacked-layout__main"],
+        div[class*="webchat__stacked-layout__content"] {
+            padding-right: 0 !important;
+            margin-right: 0 !important;
+            width: 100% !important;
+            box-sizing: border-box !important;
+        }
+
+        div[class*="react-scroll-to-bottom"][class*="scrollable"]>* {
+            margin-right: -2px !important;
+        }
+
+        /* ───────── HeroCard เหนือช่องพิมพ์ ───────── */
+        .hero-bar {
+            position: fixed;
+            bottom: 95px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            padding: 4px 8px;
+            background: transparent;
+            z-index: 9999;
+        }
+
+        /* จำกัดขนาดปุ่มไม่ให้ดัน layout */
+        .hero-btn {
+            flex: 0 1 auto;
+            max-width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 13px;
+            background: var(--hero-btn-bg);
+            color: var(--text-color);
+            border: none;
+            border-radius: 20px;
+            padding: 6px 12px;
+            cursor: pointer;
+            transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease;
+        }
+
+        .hero-btn:hover {
+            background: var(--hero-btn-hover);
+            transform: translateY(-1px);
+        }
+
+        /* ปุ่ม + */
+        .more-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            font-size: 18px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 auto;
+        }
+
+        .more-btn:hover {
+            background: var(--hero-btn-hover);
+            color: var(--bg-color);
+            transform: scale(1.05);
+        }
+
+        /* สำหรับจอมือถือ ปรับตำแหน่งขึ้นอีกนิด */
+        @media (max-width: 600px) {
+            .hero-bar {
+                bottom: 75px;
+                flex-wrap: wrap;
+                gap: 5px;
+            }
+        }
+
+
+        .webchat__basic-transcript__scrollable {
+            padding-bottom: 100px !important;
+        }
+
+        .side-panel h2 {
+            margin-bottom: 10px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-color);
+            transition: color 0.3s ease, border 0.3s ease;
+        }
+
+        .side-panel h3 {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--subtext-color);
+            margin-bottom: 12px;
+            transition: color 0.3s ease;
+        }
+
+        .side-panel.question-mode .question-btn {
+            font-size: 13px;
+            padding: 6px 8px;
+            border-radius: 8px;
+            margin-bottom: 6px;
+        }
+
+        .side-panel.question-mode .menu-btn {
+            font-size: 14px;
+            padding: 8px 10px;
+        }
+
+        /* ───────── header bar ───────── */
+        .question-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            padding: 4px 4px 2px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .question-header h2 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-color);
+            margin: 0;
+        }
+
+        /* ปุ่ม Back */
+        .return-btn-inline {
+            position: relative;
+            background: var(--button-bg);
+            border: none;
+            color: var(--text-color);
+            font-family: "Segoe UI", Arial, sans-serif;
+            letter-spacing: 0.2px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 5px 12px 5px 28px;
+            border-radius: 8px;
+            transition: all 0.25s ease;
+        }
+
+        .return-btn-inline:hover {
+            background: var(--accent-hover);
+            color: #fff;
+            transform: translateY(-1px);
+        }
+
+        .return-btn-inline::before {
+            content: "";
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            width: 6px;
+            height: 6px;
+            border-top: 2px solid currentColor;
+            border-right: 2px solid currentColor;
+            transform: translateY(-50%) rotate(-135deg);
+        }
+
+        /* h3 รองลงมาจากหัวข้อ */
+        .side-panel h3 {
+            font-size: 13.5px;
+            font-weight: 400;
+            color: var(--subtext-color);
+            margin: 8px 0 12px 2px;
+            line-height: 1.4;
+        }
+
+        button.ac-pushButton,
+        .ac-actionSet button {
+            background: var(--suggestion-bg) !important;
+            border: 1px solid var(--suggestion-border) !important;
+            color: var(--suggestion-text) !important;
+            font-weight: 500 !important;
+            border-radius: 10px !important;
+            transition: all 0.25s ease !important;
+            padding: 8px 14px !important;
+            box-shadow: var(--button-shadow);
+            backdrop-filter: blur(4px);
+            transition: all 0.25s ease;
+        }
+
+        button.ac-pushButton:hover,
+        .ac-actionSet button:hover {
+            background: var(--suggestion-hover-bg) !important;
+            border-color: var(--accent) !important;
+            color: var(--text-color) !important;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        button.ac-pushButton:active,
+        .ac-actionSet button:active {
+            background: var(--accent) !important;
+            color: #fff !important;
+            transform: translateY(0);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+
+        .ac-adaptiveCard,
+        .ac-container {
+            padding-top: 8 !important;
+            margin-top: 0 !important;
+        }
+
+        .ac-horizontal-separator {
+            display: none !important;
+            height: 0 !important;
+        }
+
+        .ac-actionSet button:first-child {
+            margin-top: 4px !important;
+        }
+
+    </style>
 </head>
 
-<body>
-  <header class="header">
-    <button class="menu-toggle" id="menuToggle">≡</button>
-    <div class="header-title">PSU Chatbot</div>
-  </header>
+<body class="dark-theme">
+    <header class="header">
+        <button class="menu-toggle" id="menuToggle">≡</button>
+        <div class="header-title">PSU Chatbot</div>
+    </header>
 
-  <div class="main-wrapper">
-    <div class="side-panel" id="sidePanel">
-      <button class="side-close" id="closePanel">×</button>
-      <h2>Menu</h2>
-      <div id="sideContent"></div>
+    <div class="notice-bar">
+        *Chatbot อยู่ระหว่างการพัฒนา ข้อมูลบางส่วนอาจยังไม่สมบูรณ์
     </div>
 
-    <div class="overlay" id="overlay"></div>
+    <div class="main-wrapper">
+        <div class="side-panel" id="sidePanel">
+            <button class="side-close" id="closePanel">×</button>
+            <h2>Menu</h2>
+            <div id="sideContent"></div>
+        </div>
 
-    <div id="chat-container">
-      <div id="webchat"></div>
+        <div class="overlay" id="overlay"></div>
+
+        <div id="chat-container">
+            <div id="webchat"></div>
+            <div class="hero-bar" id="heroBar"></div>
+        </div>
+
     </div>
-  </div>
 
-  <footer>© 2025 Prince of Songkla University | 477-302 Cloud Computing Project</footer>
+    <footer>© 2025 Prince of Songkla University | 477-302 Cloud Computing Project</footer>
 
-  <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
-  <script>
-    (async function () {
-      const res = await fetch("/token");
-      const { token } = await res.json();
-      const directLine = window.WebChat.createDirectLine({ token });
+    <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
+    <script>
+        (async function () {
+            const res = await fetch("/token");
+            const { token } = await res.json();
+            const directLine = window.WebChat.createDirectLine({ token });
 
-      const webchatContainer = document.getElementById("webchat");
-      window.WebChat.renderWebChat({
-        directLine,
-        styleOptions: {
-          hideUploadButton: true,
-          backgroundColor: "#0e1621",
-          bubbleBackground: "#1b2735",
-          bubbleTextColor: "#e8eef6",
-          bubbleFromUserBackground: "linear-gradient(180deg, #ffedb8, #ffe89e)",
-          bubbleFromUserTextColor: "#2f2a1f",
+            const webchatContainer = document.getElementById("webchat");
 
-          // ───────── กล่องข้อความ ─────────
-          sendBoxBackground: "#0e1621",
-          sendBoxBorderTop: "1px solid #2a3b4d",
-          sendBoxBorderBottom: "none",
-          sendBoxTextColor: "#e8eef6",
-          sendBoxPlaceholderColor: "#7b8591",
-          sendBoxHeight: 60,
-          sendBoxBorderRadius: 28,
-          sendBoxTextWrap: true,
+            // ดึงค่าตัวแปรจาก theme.css
+            function getVar(name) {
+                return getComputedStyle(document.documentElement)
+                    .getPropertyValue(name)
+                    .trim();
+            }
 
-          // ───────── ปุ่มส่งข้อความ ─────────
-          sendBoxButtonColor: "#1a73e8",
-          sendBoxButtonColorOnHover: "#3d8bff",
-          sendBoxButtonColorOnFocus: "#3d8bff",
+            // ดึงค่าสีทั้งหมดจากธีม
+            function getThemeColors() {
+                return {
+                    chatBg: getVar("--chat-bg"),
+                    bubbleBg: getVar("--bubble-bg"),
+                    bubbleBorder: getVar("--bubble-border"),
+                    text: getVar("--text-color"),
+                    userBg: getVar("--bubble-user-bg"),
+                    subtext: getVar("--subtext-color"),
+                    border: getVar("--border-color")
+                };
+            }
 
-          // ───────── ฟองข้อความ ─────────
-          bubbleBorderRadius: 10,
-          bubbleBorderWidth: 0,
-          bubbleFromUserBorderWidth: 0,
-          bubbleBorderColor: "transparent",
-          bubbleFromUserBorderColor: "transparent",
+            // ฟังก์ชันสำหรับ render หรืออัปเดต WebChat
+            function renderWebChat() {
+                const c = getThemeColors();
 
-          // ───────── ฟอนต์ ─────────
-          fontSizeSmall: "15px",
-          subtle: "#7b8591",
+                const styleOptions = {
+                    hideUploadButton: true,
+                    backgroundColor: c.chatBg,
+                    bubbleBackground: c.bubbleBg,
+                    bubbleTextColor: c.text,
+                    bubbleFromUserBackground: c.userBg,
+                    bubbleFromUserTextColor: c.text,
+                    sendBoxBackground: c.chatBg,
+                    sendBoxTextColor: c.text,
+                    sendBoxPlaceholderColor: c.subtext,
+                    sendBoxHeight: 60,
+                    bubbleBorderRadius: "10px",
+                    bubbleBorderColor: "transparent",
+                    bubbleFromUserBorderColor: "transparent",
+                    bubbleFromUserBorder: "10px",
+                    bubbleFromUserBorderRadius: "10px",
+                    fontSizeSmall: "15px"
+                };
 
-          // ───────── กำหนดขนาด layout ─────────
-          rootHeight: "100%",
-          rootWidth: "100%",
-          paddingRegular: 10,
-          paddingWide: 20
-        }
-      }, webchatContainer);
+                // ถ้ามี instance อยู่แล้ว → update สีแทนการรีเซ็ต
+                if (window.webChatInstance) {
+                    window.webChatInstance.updateProps({ styleOptions });
+                } else {
+                    // render ครั้งแรกเท่านั้น
+                    window.webChatInstance = window.WebChat.renderWebChat(
+                        { directLine, styleOptions },
+                        webchatContainer
+                    );
+                }
+            }
+
+            // ✅ รอให้ directLine พร้อมก่อน แล้วค่อย render
+            if (directLine) {
+                renderWebChat();
+            } else {
+                const interval = setInterval(() => {
+                    if (directLine) {
+                        clearInterval(interval);
+                        renderWebChat();
+                    }
+                }, 200);
+            }
+
+            // โหลดข้อมูล suggestion ทั้งหมด
+            const res2 = await fetch("/suggestions");
+            const data = await res2.json();
+
+            // ───────── Hero Bar ─────────
+            function renderHeroBar() {
+                const heroBar = document.getElementById("heroBar");
+                heroBar.innerHTML = "";
+                const isMobile = window.innerWidth <= 600;
+                const count = isMobile ? 2 : 4;
+
+                const all = Object.values(data || {}).flat();
+                if (!all.length) return;
+
+                const randomQs = all.sort(() => Math.random() - 0.5).slice(0, count);
+                randomQs.forEach(q => {
+                    const btn = document.createElement("button");
+                    btn.className = "hero-btn";
+                    btn.textContent = q;
+                    btn.onclick = () => sendMessage(q);
+                    heroBar.appendChild(btn);
+                });
+
+                const moreBtn = document.createElement("button");
+                moreBtn.className = "hero-btn more-btn";
+                moreBtn.textContent = "⋯";
+                moreBtn.onclick = () => {
+                    // เปิด side panel ก่อน
+                    sidePanel.classList.add("open");
+                    overlay.classList.add("show");
+
+                    // จากนั้นค่อย render หน้า Questions
+                    renderBotQuestions();
+                };
+                heroBar.appendChild(moreBtn);
+            }
+
+            renderHeroBar();
+            window.addEventListener("resize", renderHeroBar);
+
+            const sidePanel = document.getElementById("sidePanel");
+            const overlay = document.getElementById("overlay");
+            const sideContent = document.getElementById("sideContent");
+            const toggleBtn = document.getElementById("menuToggle");
+            const closeBtn = document.getElementById("closePanel");
+
+            let isOpen = false;
+            function togglePanel() {
+                isOpen = !isOpen;
+                sidePanel.classList.toggle("open", isOpen);
+                overlay.classList.toggle("show", isOpen);
+                if (isOpen) renderMainMenu();
+            }
+
+            toggleBtn.onclick = togglePanel;
+            closeBtn.onclick = togglePanel;
+            overlay.onclick = togglePanel;
+
+            function renderMainMenu() {
+                sideContent.innerHTML = "";
+                const menuItems = [
+                    { label: "🧠 Questions", key: "botfaq" },
+                    { label: "📎 Add file", key: "upload" },
+                    { label: "❓ Help", key: "help" },
+                    { label: "⚙️ Settings", key: "settings" },
+                ];
+                menuItems.forEach(item => {
+                    const btn = document.createElement("button");
+                    btn.textContent = item.label;
+                    btn.className = "menu-btn";
+                    btn.onclick = () => handleSelect(item.key);
+                    sideContent.appendChild(btn);
+                });
+            }
+
+            function renderBotQuestions() {
+                sideContent.innerHTML = "";
+                const headerBar = document.createElement("div");
+                headerBar.className = "question-header";
+
+                const title = document.createElement("h2");
+                title.textContent = "Questions";
+
+                const back = document.createElement("button");
+                back.textContent = "Back";
+                back.className = "return-btn-inline";
+                back.onclick = renderMainMenu;
+
+                headerBar.appendChild(title);
+                headerBar.appendChild(back);
+                sideContent.appendChild(headerBar);
+
+                const text = document.createElement("h3");
+                text.textContent = "มีคำถามมากกว่านี้ลองถามดูก่อนได้ครับ";
+                sideContent.appendChild(text);
+
+                for (const category in data) {
+                    const groupBox = document.createElement("div");
+                    groupBox.className = "question-group";
+
+                    const groupTitle = document.createElement("h4");
+                    groupTitle.textContent = category;
+                    groupBox.appendChild(groupTitle);
+
+                    data[category].forEach(q => {
+                        const qBtn = document.createElement("button");
+                        qBtn.textContent = q;
+                        qBtn.className = "question-btn";
+                        qBtn.onclick = () => sendMessage(q);
+                        groupBox.appendChild(qBtn);
+                    });
+
+                    sideContent.appendChild(groupBox);
+                }
+            }
+
+            function renderSettings() {
+                sideContent.innerHTML = "";
+
+                const headerBar = document.createElement("div");
+                headerBar.className = "question-header";
+
+                const title = document.createElement("h2");
+                title.textContent = "Settings";
+
+                const back = document.createElement("button");
+                back.textContent = "Back";
+                back.className = "return-btn-inline";
+                back.onclick = renderMainMenu;
+
+                headerBar.appendChild(title);
+                headerBar.appendChild(back);
+                sideContent.appendChild(headerBar);
 
 
+                // ปุ่มสลับธีม
+                const themeToggle = document.createElement("button");
+                themeToggle.textContent = "🌓 Theme";
+                themeToggle.className = "menu-btn";
+                let isLight = false;
+                themeToggle.onclick = () => {
+                    if (isLight) {
+                        // Switch to Dark
+                        document.body.classList.remove("light-theme");
+                        document.body.classList.add("dark-theme");
+                        isLight = false;
+                    } else {
+                        // Switch to Light
+                        document.body.classList.remove("dark-theme");
+                        document.body.classList.add("light-theme");
+                        isLight = true;
+                    }
+                };
+                sideContent.appendChild(themeToggle);
+            }
 
-      const res2 = await fetch("/suggestions");
-      const data = await res2.json();
 
-      const sidePanel = document.getElementById("sidePanel");
-      const overlay = document.getElementById("overlay");
-      const sideContent = document.getElementById("sideContent");
-      const toggleBtn = document.getElementById("menuToggle");
-      const closeBtn = document.getElementById("closePanel");
+            function handleSelect(key) {
+                if (key === "botfaq") renderBotQuestions();
+                else if (key === "upload") alert("📎 ฟีเจอร์แนบไฟล์ยังไม่เปิดใช้งาน");
+                else if (key === "help") alert("❓ พิมพ์คำถามทั่วไป หรือเลือกหัวข้อจากเมนูเพิ่มเติมได้เลยครับ 😊");
+                else if (key === "settings") renderSettings();
+            }
 
-      let isOpen = false;
-      function togglePanel() {
-        isOpen = !isOpen;
-        sidePanel.classList.toggle("open", isOpen);
-        overlay.classList.toggle("show", isOpen);
-        if (isOpen) renderMainMenu();
-      }
+            function sendMessage(text) {
+                directLine.postActivity({
+                    from: { id: "user1", name: "User" },
+                    type: "message",
+                    text
+                }).subscribe();
+            }
 
-      toggleBtn.onclick = togglePanel;
-      closeBtn.onclick = togglePanel;
-      overlay.onclick = togglePanel;
+        })();
 
-      function renderMainMenu() {
-        sideContent.innerHTML = "";
-        const menuItems = [
-          { label: "🧠 คำถามในบอท", key: "botfaq" },
-          { label: "📎 แนบไฟล์", key: "upload" },
-          { label: "❓ ช่วยเหลือ", key: "help" },
-        ];
-        menuItems.forEach(item => {
-          const btn = document.createElement("button");
-          btn.textContent = item.label;
-          btn.className = "menu-btn";
-          btn.onclick = () => handleSelect(item.key);
-          sideContent.appendChild(btn);
-        });
-      }
-
-      function renderBotQuestions() {
-        sideContent.innerHTML = "";
-        const back = document.createElement("button");
-        back.textContent = "⬅️ Return";
-        back.className = "menu-btn";
-        back.onclick = renderMainMenu;
-        sideContent.appendChild(back);
-
-        for (const category in data) {
-          data[category].forEach(q => {
-            const qBtn = document.createElement("button");
-            qBtn.textContent = q;
-            qBtn.className = "question-btn";
-            qBtn.onclick = () => sendMessage(q);
-            sideContent.appendChild(qBtn);
-          });
-        }
-      }
-
-      function handleSelect(key) {
-        if (key === "botfaq") renderBotQuestions();
-        else if (key === "upload") alert("📎 ฟีเจอร์แนบไฟล์ยังไม่เปิดใช้งาน");
-        else if (key === "help") alert("❓ พิมพ์คำถามทั่วไป หรือเลือกหัวข้อจากเมนูเพิ่มเติมได้เลยครับ 😊");
-      }
-
-      function sendMessage(text) {
-        directLine.postActivity({
-          from: { id: "user1", name: "User" },
-          type: "message",
-          text
-        }).subscribe();
-      }
-    })();
-  </script>
+    </script>
 </body>
 
 </html>
