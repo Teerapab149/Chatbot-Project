@@ -108,7 +108,7 @@
             --scroll-track: #e3ecfa;
             --notice-bg: rgba(88, 184, 255, 0.18);
             --notice-text: #1a3c66;
-            --hero-btn-bg: linear-gradient(180deg, #4a90ff, #2b7de9);
+            --hero-btn-bg: linear-gradient(180deg, #59cad0, #769ad4);
             --hero-btn-hover: linear-gradient(180deg, #6aa4ff, #3a84ea);
             --footer-border: rgba(0, 0, 0, 0.1);
             --overlay-bg: rgba(255, 255, 255, 0.5);
@@ -199,6 +199,23 @@
             border: none;
             outline: none;
         }
+
+        /* ─────────── Azure Bot Adaptive Card Text ─────────── */
+        .webchat__adaptive-card-renderer .ac-textBlock {
+            color: var(--text-color) !important;
+            font-family: "Segoe UI", Arial, sans-serif !important;
+            font-size: 13.5px !important;
+            line-height: 1.5 !important;
+            font-weight: 400 !important;
+            white-space: normal !important;
+            text-overflow: unset !important;
+            overflow: visible !important;
+        }
+
+        .webchat__suggested-action-text {
+            display: none !important;
+        }
+
 
         /* Hero Buttons */
         /* ───────── hero button ───────── */
@@ -697,8 +714,8 @@
 
         .side-panel h2 {
             margin-bottom: 10px;
-            padding-bottom: 6px;
-            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 8px;
+            border-bottom: transparent;
             color: var(--text-color);
             transition: color 0.3s ease, border 0.3s ease;
         }
@@ -1121,7 +1138,7 @@
                 sideContent.appendChild(headerBar);
 
                 const text = document.createElement("h3");
-                text.textContent = "มีคำถามมากกว่านี้ลองถามดูก่อนได้ครับ";
+                text.textContent = "Feel free to ask me more questions.";
                 sideContent.appendChild(text);
 
                 for (const category in data) {

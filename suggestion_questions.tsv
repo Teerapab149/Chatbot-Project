@@ -1,22 +1,26 @@
-รายชื่อคณะ	ข้อมูลคณะ/สถานที่
-การนำทาง	ข้อมูลคณะ/สถานที่
+ข้อมูลคณะ (Faculties Information)	Faculty / Location
+การนำทางในมหาวิทยาลัย (Campus Navigation)	Faculty / Location
 
-การเรียนและวิชาการ	การเรียนและวิชาการ
-วันเปิด-ปิดภาคเรียน	ปฏิทินการศึกษา
-วันลงทะเบียนเรียน	ปฏิทินการศึกษา
-การเพิ่ม-ถอนรายวิชา	ปฏิทินการศึกษา
-วันสอบ	ปฏิทินการศึกษา
+การเรียนและวิชาการ (Academic Information)	Academic / Registration
+วันเปิด-ปิดภาคเรียน (Academic Calendar)	Academic / Registration
+วันลงทะเบียนเรียน (Course Registration)	Academic / Registration
+การเพิ่ม-ถอนรายวิชา (Add / Drop Courses)	Academic / Registration
+วันสอบ (Examination Schedule)	Academic / Registration
 
-สิ่งอำนวยความสะดวก	facility
-รถไฟฟ้าใน ม.อ.	facility
+ห้องสมุด (Library Services)	Campus Facilities
+รถไฟฟ้าใน ม.อ. (Campus Shuttle)	Campus Facilities
+Wifi ของมหาวิทยาลัย (University Wi-Fi Access)	Campus Facilities
 
-โรงอาหารในมหาวิทยาลัยอยู่ตรงไหน	บริการ/สถานที่
-หญิงหลงเปิดกี่โมง	บริการ/สถานที่
-จองห้องติวหนังสือ	บริการ/สถานที่
+โรงอาหารในมหาวิทยาลัยอยู่ตรงไหน (Cafeteria Location)	Campus Services
+ห้องสมุดคุณหญิงหลงเปิดกี่โมง (Khunying Long Opening Hours)	Campus Services
+จองห้องติวหนังสือ (Study Room Booking)	Campus Services
 
-การเชื่อมต่อ Wifi ของมหาวิทยาลัย	ไอที/เครือข่าย
+การเชื่อมต่อ Wifi ของมหาวิทยาลัย (Wi-Fi Connection Help)	IT / Network
 
-ศูนย์กีฬา	กีฬา/สุขภาพ
-สนามกีฬา	กีฬา/สุขภาพ
+สนามกีฬา (Sports Complex)	Sports / Health
+ฟิตเนส (Fitness Center)	Sports / Health
+สระว่ายน้ำ (Swimming Pool)	Sports / Health
+สนามกีฬาในร่ม (Indoor Courts)	Sports / Health
+สนามกีฬากลางแจ้ง (Outdoor Courts)	Sports / Health
 
-ช่องทางการติดต่อ	contract
+ช่องทางการติดต่อ (Contact Channels)	Contact / Support
