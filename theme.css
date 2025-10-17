@@ -25,6 +25,9 @@
     --suggestion-hover-bg: #819ddb;
     --suggestion-text: #e8eef6;
     --button-shadow: 0 1px 6px rgba(255, 255, 255, 0.05);
+    --header-text-color: #f2f6fa;
+    --sentbox-bg: #1b2b41;
+    --sentbox-border: rgba(255, 255, 255, 0.06);
 }
 
 .light-theme {
@@ -54,7 +57,44 @@
     --suggestion-hover-bg: #f1e2bc;
     --suggestion-text: #2e281e;
     --button-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+    --header-text-color: #f2f6fa;
+    --sentbox-bg: #fff8e9;
+    --sentbox-border: rgba(0, 0, 0, 0.08);
 }
+
+
+.blue-theme {
+    --bg-color: #dbe7fa;
+    --chat-bg: #e6efff;
+    --panel-bg: #c9daf7;
+    --header-bg: linear-gradient(90deg, #6fa9ff 0%, #3c7ee8 100%);
+    --text-color: #132032;
+    --subtext-color: #43546a;
+    --bubble-bg: #ffffff;
+    --bubble-user-bg: #c3d7ff;
+    --button-bg: #c9dcff;
+    --accent: #2b7de9;
+    --accent-hover: #4a90ff;
+    --border-color: rgba(0, 0, 0, 0.08);
+    --scroll-thumb: #b0c7f8;
+    --scroll-thumb-hover: #9db9f6;
+    --scroll-track: #e3ecfa;
+    --notice-bg: rgba(88, 184, 255, 0.18);
+    --notice-text: #1a3c66;
+    --hero-btn-bg: linear-gradient(180deg, #4a90ff, #2b7de9);
+    --hero-btn-hover: linear-gradient(180deg, #6aa4ff, #3a84ea);
+    --footer-border: rgba(0, 0, 0, 0.1);
+    --overlay-bg: rgba(255, 255, 255, 0.5);
+    --suggestion-bg: #e4ecff;
+    --suggestion-border: rgba(88, 134, 255, 0.25);
+    --suggestion-hover-bg: #d2e0ff;
+    --suggestion-text: #0e1621;
+    --header-text-color: #f2f6fa;
+    --sentbox-bg: #d2e0ff;
+    --sentbox-border: rgba(0, 0, 0, 0.06);
+}
+
+
 
 /* ───────── Global Apply ───────── */
 body {

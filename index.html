@@ -52,6 +52,9 @@
             --suggestion-hover-bg: #819ddb;
             --suggestion-text: #e8eef6;
             --button-shadow: 0 1px 6px rgba(255, 255, 255, 0.05);
+            --header-text-color: #f2f6fa;
+            --sentbox-bg: #1b2b41;
+            --sentbox-border: rgba(255, 255, 255, 0.06);
         }
 
 
@@ -82,8 +85,41 @@
             --suggestion-border: rgba(200, 160, 70, 0.45);
             --suggestion-hover-bg: #f1e2bc;
             --suggestion-text: #2e281e;
+            --header-text-color: #f2f6fa;
+            --sentbox-bg: #fff8e9;
+            --sentbox-border: rgba(0, 0, 0, 0.08);
         }
 
+        .blue-theme {
+            --bg-color: #dbe7fa;
+            --chat-bg: #e6efff;
+            --panel-bg: #c9daf7;
+            --header-bg: linear-gradient(90deg, #6fa9ff 0%, #3c7ee8 100%);
+            --text-color: #132032;
+            --subtext-color: #43546a;
+            --bubble-bg: #ffffff;
+            --bubble-user-bg: #c3d7ff;
+            --button-bg: #c9dcff;
+            --accent: #2b7de9;
+            --accent-hover: #4a90ff;
+            --border-color: rgba(0, 0, 0, 0.08);
+            --scroll-thumb: #b0c7f8;
+            --scroll-thumb-hover: #9db9f6;
+            --scroll-track: #e3ecfa;
+            --notice-bg: rgba(88, 184, 255, 0.18);
+            --notice-text: #1a3c66;
+            --hero-btn-bg: linear-gradient(180deg, #4a90ff, #2b7de9);
+            --hero-btn-hover: linear-gradient(180deg, #6aa4ff, #3a84ea);
+            --footer-border: rgba(0, 0, 0, 0.1);
+            --overlay-bg: rgba(255, 255, 255, 0.5);
+            --suggestion-bg: #e4ecff;
+            --suggestion-border: rgba(88, 134, 255, 0.25);
+            --suggestion-hover-bg: #d2e0ff;
+            --suggestion-text: #0e1621;
+            --header-text-color: #f2f6fa;
+            --sentbox-bg: #d2e0ff;
+            --sentbox-border: rgba(0, 0, 0, 0.06);
+        }
 
 
 
@@ -144,6 +180,13 @@
             outline: none;
         }
 
+        div[class*="webchat__send-box"] {
+            background: var(--sentbox-bg) !important;
+            border-top: 1px solid var(--sentbox-border) !important;
+            border-bottom: 1px solid var(--panel) !important;
+        }
+
+
         .webchat__send-box__main {
             border-top: none !important;
         }
@@ -158,18 +201,45 @@
         }
 
         /* Hero Buttons */
+        /* ───────── hero button ───────── */
         .hero-btn {
             background: var(--hero-btn-bg);
             color: var(--text-color);
             border: none;
-            transition: background 0.3s ease, color 0.3s ease, transform 0.2s ease;
+            border-radius: 20px;
+            padding: 6px 12px;
+            font-size: 13px;
+            cursor: pointer;
+            transition:
+                background 0.3s ease,
+                color 0.3s ease,
+                transform 0.25s ease,
+                opacity 0.5s ease;
+            opacity: 1;
         }
 
+        /* hover effect */
         .hero-btn:hover {
             background: var(--hero-btn-hover);
             color: #fff;
-            transform: translateY(-1px);
+            transform: scale(1.05);
         }
+
+        /* fade animation (จางหาย / ปรากฏแบบนุ่ม ๆ) */
+        .hero-btn.fade-out {
+            opacity: 0;
+        }
+
+        /* hero bar fade ทั้งแถบ */
+        .hero-bar {
+            transition: opacity 0.5s ease;
+        }
+
+        .hero-bar.fade-out {
+            opacity: 0;
+            pointer-events: none;
+        }
+
 
 
         /* Links inside bubble */
@@ -191,7 +261,7 @@
         /* ───────── Header ───────── */
         .header {
             background: var(--header-bg);
-            color: var(--text-color);
+            color: var(--header-text-color);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -479,8 +549,8 @@
             background: var(--notice-bg);
             color: var(--notice-text);
             text-align: right;
-            padding: 6px 12px;
-            font-size: 14px;
+            padding: 4px 5px;
+            font-size: 11px;
             border-bottom: 1px solid var(--notice-bg);
         }
 
@@ -521,14 +591,14 @@
         }
 
         div[class*="react-scroll-to-bottom"][class*="scrollable"]::-webkit-scrollbar-thumb {
-            /*background: linear-gradient(180deg, #2b4c76, #1a2f4d);*/
+            background: var(--scroll-thumb);
             border-radius: 6px;
             border: 2px solid var(--scroll-track);
             transition: background 0.2s ease;
         }
 
         div[class*="react-scroll-to-bottom"][class*="scrollable"]::-webkit-scrollbar-thumb:hover {
-            /*background: linear-gradient(180deg, #4673a9, #2a5278);*/
+            background: var(--scroll-thumb-hover);
         }
 
         div[class*="react-scroll-to-bottom"][class*="scrollable"] {
@@ -536,7 +606,7 @@
             overflow-x: hidden !important;
             padding-right: 0 !important;
             margin-right: 0 !important;
-            background: var(--bg-color) !important;
+            background: var(--scroll) !important;
             box-sizing: border-box !important;
         }
 
@@ -614,7 +684,7 @@
         /* สำหรับจอมือถือ ปรับตำแหน่งขึ้นอีกนิด */
         @media (max-width: 600px) {
             .hero-bar {
-                bottom: 75px;
+                bottom: 80px;
                 flex-wrap: wrap;
                 gap: 5px;
             }
@@ -759,6 +829,54 @@
             margin-top: 4px !important;
         }
 
+        .scrollToBottomBtn {
+            position: fixed;
+            bottom: 140px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--sentbox-bg);
+            color: var(--accent);
+            border: 1px solid var(--accent);
+            border-radius: 24px;
+            padding: 8px 18px;
+            font-size: 14px;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+            z-index: 9999;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            opacity: 0.95;
+        }
+
+        /* Hover effect */
+        .scrollToBottomBtn:hover {
+            background: var(--accent);
+            color: #fff;
+            transform: translateX(-50%) scale(1.05);
+        }
+
+        /* ✅ สำหรับ tablet/mobile */
+        @media (max-width: 768px) {
+            .scrollToBottomBtn {
+                bottom: 120px;
+                font-size: 12px;
+                padding: 5px 12px;
+                border-radius: 18px;
+                opacity: 0.9;
+            }
+        }
+
+        /* ✅ สำหรับมือถือจอเล็ก */
+        @media (max-width: 480px) {
+            .scrollToBottomBtn {
+                bottom: 120px;
+                font-size: 11.5px;
+                padding: 4px 10px;
+            }
+        }
     </style>
 </head>
 
@@ -769,7 +887,7 @@
     </header>
 
     <div class="notice-bar">
-        *Chatbot อยู่ระหว่างการพัฒนา ข้อมูลบางส่วนอาจยังไม่สมบูรณ์
+        Chatbot in progress. Data may be incomplete.
     </div>
 
     <div class="main-wrapper">
@@ -789,6 +907,30 @@
     </div>
 
     <footer>© 2025 Prince of Songkla University | 477-302 Cloud Computing Project</footer>
+
+    <button id="scrollToBottomBtn" class="scrollToBottomBtn">Scroll to latest</button>
+
+    <!-- ปุ่มเลื่อนลงล่างสุด -->
+    <script>
+        const scrollBtn = document.getElementById("scrollToBottomBtn");
+
+        function getScrollableDiv() {
+            return document.querySelector('div[class*="react-scroll-to-bottom"][class*="scrollable"]');
+        }
+
+        // แสดง/ซ่อนปุ่มเมื่อ scroll ขึ้น
+        setInterval(() => {
+            const el = getScrollableDiv();
+            if (!el) return;
+            const nearBottom = el.scrollHeight - el.scrollTop - el.clientHeight < 150;
+            scrollBtn.style.display = nearBottom ? "none" : "flex";
+        }, 500);
+
+        scrollBtn.addEventListener("click", () => {
+            const el = getScrollableDiv();
+            if (el) el.scrollTo({ top: el.scrollHeight, behavior: "smooth" });
+        });
+    </script>
 
     <script src="https://cdn.botframework.com/botframework-webchat/latest/webchat.js"></script>
     <script>
@@ -873,38 +1015,58 @@
             // ───────── Hero Bar ─────────
             function renderHeroBar() {
                 const heroBar = document.getElementById("heroBar");
-                heroBar.innerHTML = "";
-                const isMobile = window.innerWidth <= 600;
-                const count = isMobile ? 2 : 4;
+                const oldQuestions = heroBar.querySelectorAll(".hero-btn:not(.more-btn)");
 
-                const all = Object.values(data || {}).flat();
-                if (!all.length) return;
+                // ให้ปุ่มเดิมค่อย ๆ หายก่อน
+                oldQuestions.forEach(btn => btn.classList.add("fade-out"));
 
-                const randomQs = all.sort(() => Math.random() - 0.5).slice(0, count);
-                randomQs.forEach(q => {
-                    const btn = document.createElement("button");
-                    btn.className = "hero-btn";
-                    btn.textContent = q;
-                    btn.onclick = () => sendMessage(q);
-                    heroBar.appendChild(btn);
-                });
+                setTimeout(() => {
+                    // ลบของเก่าออกหลังจาก fade-out เสร็จ
+                    oldQuestions.forEach(btn => btn.remove());
 
-                const moreBtn = document.createElement("button");
-                moreBtn.className = "hero-btn more-btn";
-                moreBtn.textContent = "⋯";
-                moreBtn.onclick = () => {
-                    // เปิด side panel ก่อน
-                    sidePanel.classList.add("open");
-                    overlay.classList.add("show");
+                    const isMobile = window.innerWidth <= 600;
+                    const count = isMobile ? 2 : 5; // ✅ จำกัดสูงสุด 5 ปุ่มบน Desktop
 
-                    // จากนั้นค่อย render หน้า Questions
-                    renderBotQuestions();
-                };
-                heroBar.appendChild(moreBtn);
+                    const all = Object.values(data || {}).flat();
+                    if (!all.length) return;
+
+                    const randomQs = all.sort(() => Math.random() - 0.5).slice(0, count);
+
+                    // ลบปุ่ม more-btn เดิมออกก่อน (ถ้ามี)
+                    const oldMore = heroBar.querySelector(".more-btn");
+                    if (oldMore) oldMore.remove();
+
+                    // เพิ่มปุ่มคำถามใหม่แบบสุ่ม
+                    randomQs.forEach(q => {
+                        const btn = document.createElement("button");
+                        btn.className = "hero-btn fade-out";
+                        btn.textContent = q;
+                        btn.onclick = () => sendMessage(q);
+                        heroBar.appendChild(btn);
+
+                        // fade-in ทีละปุ่ม
+                        setTimeout(() => btn.classList.remove("fade-out"), 50);
+                    });
+
+                    // ✅ เพิ่มปุ่ม more ปิดท้ายเสมอ
+                    const newMore = document.createElement("button");
+                    newMore.className = "hero-btn more-btn";
+                    newMore.textContent = "⋯";
+                    newMore.onclick = () => {
+                        sidePanel.classList.add("open");
+                        overlay.classList.add("show");
+                        renderBotQuestions();
+                    };
+                    heroBar.appendChild(newMore);
+                }, 300);
             }
+
+
 
             renderHeroBar();
             window.addEventListener("resize", renderHeroBar);
+
+            setInterval(renderHeroBar, 30000); // เปลี่ยนคำถามทุก 30 วินาที
 
             const sidePanel = document.getElementById("sidePanel");
             const overlay = document.getElementById("overlay");
@@ -1000,26 +1162,69 @@
                 headerBar.appendChild(back);
                 sideContent.appendChild(headerBar);
 
+                // ===== ปุ่มเมนู Theme =====
+                const themeBtn = document.createElement("button");
+                themeBtn.textContent = "🌓 Theme";
+                themeBtn.className = "menu-btn";
+                themeBtn.onclick = renderThemeSettings; // ไปหน้าตั้งค่า Theme
 
-                // ปุ่มสลับธีม
-                const themeToggle = document.createElement("button");
-                themeToggle.textContent = "🌓 Theme";
-                themeToggle.className = "menu-btn";
-                let isLight = false;
-                themeToggle.onclick = () => {
-                    if (isLight) {
-                        // Switch to Dark
-                        document.body.classList.remove("light-theme");
-                        document.body.classList.add("dark-theme");
-                        isLight = false;
-                    } else {
-                        // Switch to Light
-                        document.body.classList.remove("dark-theme");
-                        document.body.classList.add("light-theme");
-                        isLight = true;
-                    }
-                };
-                sideContent.appendChild(themeToggle);
+                sideContent.appendChild(themeBtn);
+
+                // (ในอนาคตจะเพิ่มเมนูอื่น เช่น ภาษา เสียง ฯลฯ ได้ตรงนี้)
+            }
+
+
+            // ───────── หน้าเลือก Theme ─────────
+            function renderThemeSettings() {
+                sideContent.innerHTML = "";
+
+                const headerBar = document.createElement("div");
+                headerBar.className = "question-header";
+
+                const title = document.createElement("h2");
+                title.textContent = "Theme";
+
+                const back = document.createElement("button");
+                back.textContent = "Back";
+                back.className = "return-btn-inline";
+                back.onclick = renderSettings; // กลับไปหน้า Settings หลัก
+
+                headerBar.appendChild(title);
+                headerBar.appendChild(back);
+                sideContent.appendChild(headerBar);
+
+                const themeSection = document.createElement("div");
+                themeSection.style.marginTop = "14px";
+
+                const themes = [
+                    { name: "🌙 Deep Tide", class: "dark-theme" },
+                    { name: "☀️ Golden Haze", class: "light-theme" },
+                    { name: "💧 Sky Drift", class: "blue-theme" }
+                ];
+
+                let currentTheme = themes.find(t => document.body.classList.contains(t.class))?.class || "dark-theme";
+
+                themes.forEach(theme => {
+                    const btn = document.createElement("button");
+                    btn.textContent = theme.name + (theme.class === currentTheme ? " (current)" : "");
+                    btn.className = "menu-btn";
+                    btn.style.display = "block";
+                    btn.style.marginBottom = "8px";
+
+                    btn.onclick = () => {
+                        themes.forEach(t => document.body.classList.remove(t.class));
+                        document.body.classList.add(theme.class);
+
+                        Array.from(themeSection.querySelectorAll("button")).forEach(b => {
+                            b.textContent = b.textContent.replace(" (current)", "");
+                        });
+                        btn.textContent = theme.name + " (current)";
+                    };
+
+                    themeSection.appendChild(btn);
+                });
+
+                sideContent.appendChild(themeSection);
             }
 
 
@@ -1040,7 +1245,92 @@
 
         })();
 
+
     </script>
+
+    <script>
+        (function setupTypingIndicator() {
+            // รอให้บอทโหลดเสร็จแน่นอนก่อน
+            const waitForInstance = setInterval(() => {
+                const chatContainer = document.getElementById('chat-container');
+                const dl = window.webChatInstance?.props?.directLine;
+
+                if (chatContainer && dl) {
+                    clearInterval(waitForInstance);
+
+                    // ✅ สร้าง indicator ถ้ายังไม่มี
+                    let indicator = document.getElementById('typingIndicator');
+                    if (!indicator) {
+                        indicator = document.createElement('div');
+                        indicator.id = 'typingIndicator';
+                        indicator.innerHTML = `
+          <span>PSU Bot กำลังพิมพ์</span>
+          <span class="typing-dots"><span>.</span><span>.</span><span>.</span></span>
+        `;
+                        chatContainer.appendChild(indicator);
+                    }
+
+                    // ✅ สไตล์ (ฝังไว้ให้แน่ใจว่ามี)
+                    const style = document.createElement('style');
+                    style.textContent = `
+        #typingIndicator {
+          position: absolute;
+          bottom: 95px;
+          left: 50%;
+          transform: translateX(-50%);
+          background: rgba(0, 0, 0, 0.25);
+          color: var(--subtext-color);
+          padding: 6px 12px;
+          border-radius: 10px;
+          font-size: 13px;
+          pointer-events: none;
+          opacity: 0;
+          transition: opacity 0.3s ease;
+          z-index: 99;
+          display: flex;
+          gap: 4px;
+          align-items: center;
+        }
+        .typing-dots span {
+          opacity: 0.2;
+          animation: blink 1.4s infinite;
+        }
+        .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes blink {
+          0%, 80%, 100% { opacity: 0.2; }
+          40% { opacity: 1; }
+        }
+      `;
+                    document.head.appendChild(style);
+
+                    const show = () => (indicator.style.opacity = '1');
+                    const hide = () => (indicator.style.opacity = '0');
+
+                    let safetyTimer = null;
+
+                    // ✅ จับทุก activity หลัง instance พร้อมจริง
+                    dl.activity$.subscribe(activity => {
+                        // ผู้ใช้ส่งข้อความ → แสดง "กำลังพิมพ์"
+                        if (activity.from?.role === 'user' && activity.type === 'message') {
+                            clearTimeout(safetyTimer);
+                            show();
+                            safetyTimer = setTimeout(hide, 8000); // กันกรณีบอทเงียบ
+                        }
+
+                        // บอทตอบ → ซ่อน indicator หลัง delay นิดหน่อย
+                        if (activity.from?.role === 'bot' && activity.type === 'message') {
+                            clearTimeout(safetyTimer);
+                            setTimeout(hide, 300);
+                        }
+                    });
+                }
+            }, 500);
+        })();
+    </script>
+
+
+
 </body>
 
 </html>
